@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suryansh's Wedding Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #8e7dbe;
+            --accent-color: #d4af37; /* Gold accent */
+            --bg-color: #fcfbf8;
+            --text-dark: #2d2d2d;
+        }
+
+        /* Smooth Scroll Behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Fireworks Canvas */
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            margin: 0 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        header h1 { font-size: 4.5rem; margin-bottom: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .date { font-size: 1.5rem; letter-spacing: 5px; margin-top: 10px; border-top: 1px solid white; padding-top: 10px; }
+
+        section { padding: 80px 20px; max-width: 1000px; margin: 0 auto; }
+        h2 { font-size: 2.8rem; color: var(--primary-color); margin-bottom: 30px; position: relative; text-align: center; }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            background: var(--accent-color);
+            margin: 15px auto;
+        }
+
+        .couple-photo-container {
+            margin: 40px auto;
+            max-width: 500px;
+            padding: 15px;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+            transition: transform 0.5s ease;
+        }
+        .couple-photo-container:hover { transform: rotate(0deg) scale(1.02); }
+        .couple-photo-container img { width: 100%; height: auto; }
+
+        /* Invitation Card Styles */
+        .invitation-frame {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .invitation-frame img {
+            width: 100%;
+            height: auto;
+            border: 2px solid var(--accent-color);
+            display: block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
+
+        footer { padding: 60px; background: #fff; border-top: 1px solid #eee; text-align: center; }
+
+        @media (max-width: 768px) {
+            .info-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 3rem; }
+            header { height: 70vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworks-canvas"></canvas>
+
+    <nav>
+        <a href="#our-story">Our Story</a>
+        <a href="#details">Details</a>
+        <a href="#invitation">Invitation</a>
+    </nav>
+
+    <header>
+        <h1 class="reveal">Suryansh Rathi</h1>
+        <h1>(seemu)</h1>
+        <p class="date reveal delay-1">APRIL 27, 2026</p>
+    </header>
+
+    <section id="our-story">
+        <h2 class="reveal">The Happy Couple</h2>
+        <div class="couple-photo-container reveal">
+            <img src="hi.jpg" alt="The Happy Couple">
+        </div>
+        <div style="text-align: center;" class="reveal delay-1">
+            <p style="font-style: italic; font-size: 1.2rem; color: #666;">"A celebration of love, laughter, and a lifetime together."</p>
+        </div>
+    </section>
+
+    <section id="details" style="background-color: #f4f1ea; max-width: 100%;">
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <h2 class="reveal">Event Details</h2>
+            <div class="info-grid">
+                <div class="card reveal delay-1">
+                    <h3 style="color:var(--accent-color)">The Ceremony location</h3>
+                    <p><strong>J.P.S Public School</strong><br>Morna Road, Muzaffarnagar</p>
+                    <p>Arrival: 10:00 AM<br>Vows: 2:00 PM</p>
+                </div>
+                <div class="card reveal delay-2">
+                    <h3 style="color:var(--accent-color)">The Reception</h3>
+                    <p>To follow immediately at the same venue.</p>
+                    <p>Dinner, dancing, and drinks until late!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="invitation">
+        <h2 class="reveal">Formal Invitation</h2>
+        <div class="invitation-frame reveal delay-1">
+            <img src="By.jpg" alt="Official Invitation Card">
+        </div>
+        <p style="text-align: center; font-family: 'Playfair Display'; font-style: italic;" class="reveal delay-2">
+            We request the honor of your presence.
+        </p>
+    </section>
+
+    <footer>
+        <p>Made with love for Suryansh & Partner.</p>
+        <p>© 2026 Wedding Celebration</p>
+    </footer>
+
+    <script>
+        /* FIREWORKS LOGIC */
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+        let fireworks = [];
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Firework {
+            constructor(x, y, targetX, targetY) {
+                this.x = x; this.y = y;
+                this.targetX = targetX; this.targetY = targetY;
+                this.distanceToTarget = Math.sqrt(Math.pow(targetX - x, 2) + Math.pow(targetY - y, 2));
+                this.distanceTraveled = 0;
+                this.coordinates = [[this.x, this.y], [this.x, this.y], [this.x, this.y]];
+                this.angle = Math.atan2(targetY - y, targetX - x);
+                this.speed = 2; this.acceleration = 1.05;
+                this.brightness = Math.random() * 60 + 50;
+            }
+            update(index) {
+                this.coordinates.pop();
+                this.coordinates.unshift([this.x, this.y]);
+                this.speed *= this.acceleration;
+                let vx = Math.cos(this.angle) * this.speed;
+                let vy = Math.sin(this.angle) * this.speed;
+                this.distanceTraveled = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
+                if(this.distanceTraveled >= this.distanceToTarget) {
+                    createParticles(this.targetX, this.targetY);
+                    fireworks.splice(index, 1);
+                } else {
+                    this.x += vx; this.y += vy;
+                    this.distanceToTarget -= this.distanceTraveled;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+                ctx.lineTo(this.x, this.y);
+                ctx.strokeStyle = `hsl(40, 100%, ${this.brightness}%)`;
+                ctx.stroke();
+            }
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.coordinates = [[this.x, this.y], [this.x, this.y], [this.x, this.y], [this.x, this.y], [this.x, this.y]];
+                this.angle = Math.random() * Math.PI * 2;
+                this.speed = Math.random() * 10 + 1;
+                this.friction = 0.95; this.gravity = 1;
+                this.hue = Math.random() * 20 + 30;
+                this.alpha = 1; this.decay = Math.random() * 0.015 + 0.015;
+            }
+            update(index) {
+                this.coordinates.pop();
+                this.coordinates.unshift([this.x, this.y]);
+                this.speed *= this.friction;
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed + this.gravity;
+                this.alpha -= this.decay;
+                if(this.alpha <= this.decay) particles.splice(index, 1);
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+                ctx.lineTo(this.x, this.y);
+                ctx.strokeStyle = `hsla(${this.hue}, 100%, 50%, ${this.alpha})`;
+                ctx.stroke();
+            }
+        }
+
+        function createParticles(x, y) {
+            let count = 50;
+            while(count--) particles.push(new Particle(x, y));
+        }
+
+        function animationLoop() {
+            requestAnimationFrame(animationLoop);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'lighter';
+            fireworks.forEach((fw, i) => { fw.draw(); fw.update(i); });
+            particles.forEach((p, i) => { p.draw(); p.update(i); });
+        }
+
+        window.onload = () => {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            animationLoop();
+            let initial = 0;
+            const interval = setInterval(() => {
+                fireworks.push(new Firework(canvas.width/2, canvas.height, Math.random()*canvas.width, Math.random()*canvas.height/2));
+                if(++initial >= 3) clearInterval(interval);
+            }, 300);
+            window.addEventListener('click', (e) => {
+                fireworks.push(new Firework(canvas.width/2, canvas.height, e.clientX, e.clientY));
+            });
+        };
+
+        /* INTERSECTION OBSERVER */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>
